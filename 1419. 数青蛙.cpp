@@ -1,78 +1,44 @@
-#include<iostream>
-#include<vector>
-#include<string>
-using namespace std;
-int main()
-{
-	string croakOfFrogs = "ccroak";
-	int hash1[5] = { 0 };//当前
+class Solution {
+public:
+    int minNumberOfFrogs(string croakOfFrogs) {
+	string s = "croak";
+	unordered_map<char, int> map;
+	int sn = s.length();
+	vector<int>hash(sn);
 	int n = croakOfFrogs.length();
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < sn; i++)
 	{
-		switch (croakOfFrogs[i])
+		map[s[i]] = i;
+	}
+	for (auto ch : croakOfFrogs)
+	{
+		if (ch == 'c')
 		{
-		case 'c':
-			if (hash1[4] == 0)
+			if (hash[sn - 1] == 0)
 			{
-				hash1[0]++;
+				hash[0]++;
 			}
 			else
 			{
-				hash1[4]--;
-				hash1[0]++;
-			}
-			break;
-		case'r':
-			if (hash1[0] > 0)
-			{
-				hash1[1]++;
-				hash1[0]--;
-			}
-			else
-			{
-				return -1;
-			}
-			break;
-		case'o':
-			if (hash1[1] > 0)
-			{
-				hash1[2]++;
-				hash1[1]--;
-			}
-			else
-			{
-				return -1;
-			}
-			break;
-		case'a':
-			if (hash1[2] > 0)
-			{
-				hash1[3]++;
-				hash1[2]--;
-			}
-			else
-			{
-				return -1;
-			}
-			break;
-		case'k':
-			if (hash1[3] > 0)
-			{
-				hash1[4]++;
-				hash1[3]--;
-			}
-			else
-			{
-				return -1;
+				hash[sn - 1]--;
+				hash[0]++;
 			}
 		}
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		if (hash1[i])
+		else
 		{
+			if (hash[map[ch] - 1] < 1)
+			{
+				return -1;
+			}
+			hash[map[ch] - 1]--;
+			hash[map[ch]]++;
+		}
+	}
+	for (int i=0;i<sn-1;i++)
+	{
+		if (hash[i])
 			return -1;
-		}
 	}
-	return hash1[4];
-}
+	return hash[sn-1];
+    }
+};
